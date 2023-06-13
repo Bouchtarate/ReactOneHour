@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Tweet from "./components/Tweet";
 import "./App.css";
 
@@ -10,26 +10,14 @@ const App = () => {
   const increase = () => {
     setCount(count + 1);
   };
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "hamza",
-      message: "Hi im new here",
-      like: 4,
-    },
-    {
-      id: 2,
-      name: "aya",
-      message: "Hi hamza",
-      like: 1,
-    },
-    {
-      id: 3,
-      name: "ziad",
-      message: "welcome hamza",
-      like: 42,
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users/")
+      .then((res) => res.json())
+      .then((data) => setUsers(data))
+      .catch((err) => console.err("404"));
+  }, []);
   return (
     <>
       <div className="tweet">
@@ -37,8 +25,8 @@ const App = () => {
           <Tweet
             key={user.id}
             name={user.name}
-            message={user.message}
-            like={user.like}
+            message={user.company.name}
+            like={user.id}
           />
         ))}
         <div className="count">
